@@ -1,0 +1,68 @@
+<div class="key-form">
+  <mat-form-field class="key-full-width">
+    <mat-label>API KEY</mat-label>
+    <input matInput placeholder="Ex. demo_api_key" [(ngModel)]='apiKey'>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="getNasaResult()">Get Nasa Result</button>
+</div>
+
+
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Name.." #input>
+</mat-form-field>
+
+<div class="loader-class" *ngIf="loading">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let row"> {{row?.id}} </td>
+    </ng-container>
+
+    <!-- neo_reference_id Column -->
+    <ng-container matColumnDef="neo_reference_id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Neo Reference Id </th>
+      <td mat-cell *matCellDef="let row"> {{row?.neo_reference_id}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td mat-cell *matCellDef="let row"> {{row?.name}} </td>
+    </ng-container>
+
+    <!-- nasa_jpl_url Column -->
+    <ng-container matColumnDef="nasa_jpl_url">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> NASA JPL URL </th>
+      <td mat-cell *matCellDef="let row"> {{row?.nasa_jpl_url}} </td>
+    </ng-container>
+
+    <!-- estimated_diameter Column -->
+    <ng-container matColumnDef="estimated_diameter">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Estimated Diameter (KM)</th>
+      <td mat-cell *matCellDef="let row"> {{row?.estimated_diameter?.kilometers?.estimated_diameter_min}} -
+        {{row?.estimated_diameter?.kilometers?.estimated_diameter_max}} </td>
+    </ng-container>
+
+    <!-- absolute_magnitude_h Column -->
+    <ng-container matColumnDef="absolute_magnitude_h">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Absolute Magnitude </th>
+      <td mat-cell *matCellDef="let row"> {{row?.absolute_magnitude_h}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="6">No data matching the filter "{{input.value}}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
